@@ -249,7 +249,8 @@
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
-						"type": "AzureBlobFSLocation"
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "data"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
