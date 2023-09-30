@@ -7,13 +7,33 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "databricks-datafactory-alura"
 		},
+		"FileServerExcel_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServerExcel'"
+		},
 		"databricks_datafactory_link_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'databricks_datafactory_link'"
 		},
+		"linkedDatalake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'linkedDatalake'"
+		},
+		"FileServerExcel_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Temp"
+		},
+		"FileServerExcel_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "arnoni"
+		},
 		"databricks_datafactory_link_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "0926-030845-264nac6m"
+		},
+		"linkedDatalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalakealuracurso.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"type": "string",
@@ -45,8 +65,23 @@
 					"databricks_datafactory_link_accessToken": {
 						"value": "[parameters('databricks_datafactory_link_accessToken')]"
 					},
+					"linkedDatalake_accountKey": {
+						"value": "[parameters('linkedDatalake_accountKey')]"
+					},
+					"FileServerExcel_password": {
+						"value": "[parameters('FileServerExcel_password')]"
+					},
 					"databricks_datafactory_link_properties_typeProperties_existingClusterId": {
 						"value": "[parameters('databricks_datafactory_link_properties_typeProperties_existingClusterId')]"
+					},
+					"linkedDatalake_properties_typeProperties_url": {
+						"value": "[parameters('linkedDatalake_properties_typeProperties_url')]"
+					},
+					"FileServerExcel_properties_typeProperties_host": {
+						"value": "[parameters('FileServerExcel_properties_typeProperties_host')]"
+					},
+					"FileServerExcel_properties_typeProperties_userId": {
+						"value": "[parameters('FileServerExcel_properties_typeProperties_userId')]"
 					}
 				}
 			},

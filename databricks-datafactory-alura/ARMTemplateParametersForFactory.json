@@ -5,11 +5,26 @@
 		"factoryName": {
 			"value": "databricks-datafactory-alura"
 		},
+		"FileServerExcel_password": {
+			"value": ""
+		},
 		"databricks_datafactory_link_accessToken": {
 			"value": ""
 		},
+		"linkedDatalake_accountKey": {
+			"value": ""
+		},
+		"FileServerExcel_properties_typeProperties_host": {
+			"value": "C:\\Temp"
+		},
+		"FileServerExcel_properties_typeProperties_userId": {
+			"value": "arnoni"
+		},
 		"databricks_datafactory_link_properties_typeProperties_existingClusterId": {
 			"value": "0926-030845-264nac6m"
+		},
+		"linkedDatalake_properties_typeProperties_url": {
+			"value": "https://datalakealuracurso.dfs.core.windows.net/"
 		}
 	}
 }

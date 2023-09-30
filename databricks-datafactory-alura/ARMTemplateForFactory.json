@@ -7,13 +7,33 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "databricks-datafactory-alura"
 		},
+		"FileServerExcel_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FileServerExcel'"
+		},
 		"databricks_datafactory_link_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'databricks_datafactory_link'"
 		},
+		"linkedDatalake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'linkedDatalake'"
+		},
+		"FileServerExcel_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Temp"
+		},
+		"FileServerExcel_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "arnoni"
+		},
 		"databricks_datafactory_link_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "0926-030845-264nac6m"
+		},
+		"linkedDatalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalakealuracurso.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -75,13 +95,92 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/databricks_datafactory_link')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataFile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FileServerExcel",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "Data.csv"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "OrderDate",
+						"type": "String"
+					},
+					{
+						"name": "Region",
+						"type": "String"
+					},
+					{
+						"name": "Rep",
+						"type": "String"
+					},
+					{
+						"name": "Item",
+						"type": "String"
+					},
+					{
+						"name": "Units",
+						"type": "String"
+					},
+					{
+						"name": "UnitCost",
+						"type": "String"
+					},
+					{
+						"name": "Total",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FileServerExcel')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FileServerExcel')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FileServerExcel_properties_typeProperties_host')]",
+					"userId": "[parameters('FileServerExcel_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FileServerExcel_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntimeSelf",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntimeSelf')]"
 			]
 		},
 		{
@@ -101,6 +200,59 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/linkedDatalake')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('linkedDatalake_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('linkedDatalake_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntimeSelf')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "linkedDatalake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/linkedDatalake')]"
+			]
 		}
 	]
 }
